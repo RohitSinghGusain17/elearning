@@ -2,51 +2,35 @@ pipeline {
     agent any
 
     environment {
-        BACKEND_PATH = 'backend'
-        FRONTEND_PATH = 'frontend'
+        FRONTEND_DIR = 'frontend'
+        BACKEND_DIR = 'backend'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/your/repo.git'
+                git 'https://github.com/RohitSinghGusain17/elearning.git'
             }
         }
 
-        stage('Build Docker Containers') {
+        stage('Build Docker Images') {
             steps {
-                script {
-                    // Stop existing containers
-                    sh 'docker-compose down'
-
-                    // Build images
-                    sh 'docker-compose build'
-                }
+                echo 'Building Docker Images for Frontend and Backend'
+                sh 'docker-compose build'
             }
         }
 
-        stage('Deploy Services') {
+        stage('Run Containers') {
             steps {
-                script {
-                    // Start containers
-                    sh 'docker-compose up -d'
-                }
-            }
-        }
-
-        stage('Cleanup Unused Images/Containers') {
-            steps {
-                sh 'docker system prune -af'
+                echo 'Starting Docker Containers'
+                sh 'docker-compose up -d'
             }
         }
     }
 
     post {
-        success {
-            echo 'Deployment Successful!'
-        }
-        failure {
-            echo 'Deployment Failed!'
+        always {
+            echo 'Pipeline execution completed.'
         }
     }
 }
