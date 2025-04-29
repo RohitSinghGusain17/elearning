@@ -16,7 +16,7 @@ pipeline {
     stage('Install Backend Dependencies') {
       steps {
         dir("${BACKEND_DIR}") {
-          sh 'npm install'
+          bat 'npm install'
         }
       }
     }
@@ -24,7 +24,7 @@ pipeline {
     stage('Install Frontend Dependencies') {
       steps {
         dir("${FRONTEND_DIR}") {
-          sh 'npm install'
+          bat 'npm install'
         }
       }
     }
@@ -32,26 +32,26 @@ pipeline {
     stage('Build Frontend') {
       steps {
         dir("${FRONTEND_DIR}") {
-          sh 'npm run build'
+          bat 'npm run build'
         }
       }
     }
 
     stage('Build Docker Images') {
       steps {
-        sh 'docker-compose build'
+        bat 'docker-compose build'
       }
     }
 
     stage('Run Containers') {
       steps {
-        sh 'docker-compose up -d'
+        bat 'docker-compose up -d'
       }
     }
 
     stage('Verify') {
       steps {
-        sh 'docker ps' // Check running containers
+        bat 'docker ps' // Check running containers
       }
     }
   }
