@@ -11,6 +11,9 @@ services:
       - ./backend/.env
     volumes:
       - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
     networks:
       - elearning-network
 
@@ -27,6 +30,19 @@ services:
     networks:
       - elearning-network
 
+  mongo:
+    image: mongo:4.4
+    container_name: elearning-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - elearning-network
+
 networks:
   elearning-network:
     driver: bridge
+
+volumes:
+  mongo-data:
