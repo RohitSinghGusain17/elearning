@@ -44,7 +44,7 @@ pipeline {
         }
         cleanup{
             echo 'Pipeline cleaned up!'
-            bat 'docker-compose down'
+            // REMOVED: bat 'docker-compose down'
         }
     }
 }
