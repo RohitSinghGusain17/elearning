@@ -15,19 +15,19 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker-compose build'
+                bat 'docker-compose build'
             }
         }
 
         stage('Run Containers') {
             steps {
-                sh 'docker-compose up -d'
+                bat 'docker-compose up -d'
             }
         }
 
         stage('Verify') {
             steps {
-                sh 'docker ps' // Check running containers
+                bat 'docker ps'
             }
         }
     }
@@ -44,7 +44,7 @@ pipeline {
         }
         cleanup{
             echo 'Pipeline cleaned up!'
-            sh 'docker-compose down'
+            bat 'docker-compose down'
         }
     }
 }
