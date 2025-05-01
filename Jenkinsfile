@@ -1,74 +1,50 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    BACKEND_DIR = "backend"
-    FRONTEND_DIR = "frontend"
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        git branch: 'main', url: 'https://github.com/RohitSinghGusain17/elearning.git' // Update with your repo
-      }
+    environment {
+        BACKEND_DIR = "backend"
+        FRONTEND_DIR = "frontend"
     }
 
-    stage('Install Backend Dependencies') {
-      steps {
-        dir("${BACKEND_DIR}") {
-          sh 'npm install'
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/RohitSinghGusain17/elearning.git'
+            }
         }
-      }
-    }
 
-    stage('Install Frontend Dependencies') {
-      steps {
-        dir("${FRONTEND_DIR}") {
-          sh 'npm install'
+        stage('Build Docker Images') {
+            steps {
+                sh 'docker-compose build'
+            }
         }
-      }
-    }
 
-    stage('Build Frontend') {
-      steps {
-        dir("${FRONTEND_DIR}") {
-          sh 'set "CI=false" && npm run build'
+        stage('Run Containers') {
+            steps {
+                sh 'docker-compose up -d'
+            }
         }
-      }
+
+        stage('Verify') {
+            steps {
+                sh 'docker ps' // Check running containers
+            }
+        }
     }
 
-    stage('Build Docker Images') {
-      steps {
-        sh 'docker-compose build'
-      }
+    post {
+        always {
+            echo 'Pipeline finished.'
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+        cleanup{
+            echo 'Pipeline cleaned up!'
+            sh 'docker-compose down'
+        }
     }
-
-    stage('Run Containers') {
-      steps {
-        sh 'docker-compose up -d'
-      }
-    }
-
-    stage('Verify') {
-      steps {
-        sh 'docker ps' // Check running containers
-      }
-    }
-  }
-
-  post {
-    always {
-      echo 'Pipeline finished.'
-    }
-    success {
-      echo 'Pipeline succeeded!'
-    }
-    failure {
-      echo 'Pipeline failed!'
-    }
-    cleanup{
-      echo 'Pipeline cleaned up!'
-      sh 'docker-compose down'
-    }
-  }
 }
