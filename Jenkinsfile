@@ -32,7 +32,7 @@ pipeline {
     stage('Build Frontend') {
       steps {
         dir("${FRONTEND_DIR}") {
-          bat "set CI=false && npm run build"
+          bat 'set "CI=false" && npm run build'
         }
       }
     }
