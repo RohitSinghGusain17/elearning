@@ -67,7 +67,7 @@ const AdminHomePage = () => {
                         <StyledPaper>
                             <img src={Fees} alt="Fees" />
                             <Title>
-                                Fees Collection
+                                Fee Collection
                             </Title>
                             <Data start={0} end={12000} duration={2.5} prefix="₹" />                        </StyledPaper>
                     </Grid>
