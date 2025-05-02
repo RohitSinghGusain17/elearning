@@ -13,13 +13,14 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Install Dependencies (only once)') {
             steps {
-                bat 'docker-compose build'
+                bat 'cd frontend && npm install'
+                bat 'cd backend && npm install'
             }
         }
 
-        stage('Run Containers') {
+        stage('Start Services') {
             steps {
                 bat 'docker-compose up -d'
             }
@@ -41,10 +42,6 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
-        }
-        cleanup{
-            echo 'Pipeline cleaned up!'
-            // REMOVED: bat 'docker-compose down'
         }
     }
 }
